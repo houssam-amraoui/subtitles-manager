@@ -86,7 +86,7 @@ public abstract class BaseSubtitleCue implements SubtitleCue {
         this.setEndTime(this.getEndTime().subtract(toSubtract));
     }
 
-    public String getText() {
+   /* public String getText() {
         String[] texts = new String[this.lines.size()];
 
         for (int i=0; i<texts.length; i++) {
@@ -94,7 +94,7 @@ public abstract class BaseSubtitleCue implements SubtitleCue {
         }
 
         return String.join("\n", texts);
-    }
+    }*/
 
     @Override
     public String toString() {

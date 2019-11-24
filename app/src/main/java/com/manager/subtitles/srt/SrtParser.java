@@ -15,16 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import fr.noop.subtitle.model.SubtitleParser;
-import fr.noop.subtitle.model.SubtitleParsingException;
-import fr.noop.subtitle.util.SubtitlePlainText;
-import fr.noop.subtitle.util.SubtitleTextLine;
-import fr.noop.subtitle.util.SubtitleTimeCode;
 
-/**
- * Created by clebeaupin on 21/09/15.
- */
-public class SrtParser implements SubtitleParser {
+
+
+
+public class SrtParser  {
     private enum CursorStatus {
         NONE,
         CUE_ID,
@@ -33,17 +28,17 @@ public class SrtParser implements SubtitleParser {
     }
 
     private String charset; // Charset of the input files
-
+/*
     public SrtParser(String charset) {
         this.charset = charset;
     }
 
-    @Override
+
     public SrtObject parse(InputStream is) throws IOException, SubtitleParsingException {
     	return parse(is, true);
     }
     
-    @Override
+
     public SrtObject parse(InputStream is, boolean strict) throws IOException, SubtitleParsingException {
         // Create srt object
         SrtObject srtObject = new SrtObject();
@@ -134,5 +129,5 @@ public class SrtParser implements SubtitleParser {
             throw new SubtitleParsingException(String.format(
                     "Unable to parse time code: %s", timeCodeString));
         }
-    }
+    }*/
 }

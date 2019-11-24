@@ -1,32 +1,11 @@
-/*
- *  This file is part of the noOp organization .
- *
- *  (c) Cyrille Lebeaupin <clebeaupin@noop.fr>
- *
- *  For the full copyright and license information, please view the LICENSE
- *  file that was distributed with this source code.
- *
- */
-
 package com.manager.subtitles.vtt;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+public class VttWrite {
 
-/**
- * Created by clebeaupin on 11/10/15.
- */
-public class VttWriter {
-  /*
-    private String charset; // Charset used to encode file
+    private String charset;
 
-    public VttWriter(String charset) {
-        this.charset = charset;
-    }
-
-    @Override
-    public void write(SubtitleObject subtitleObject, OutputStream os) throws IOException {
+/*
+    public void write(SubtitleObject subtitleObject, OutputStream os)  {
         try {
             // Write header
             os.write(new String("WEBVTT\n\n").getBytes(this.charset));
@@ -64,4 +43,5 @@ public class VttWriter {
                 timeCode.getSecond(),
                 timeCode.getMillisecond());
     }*/
+
 }

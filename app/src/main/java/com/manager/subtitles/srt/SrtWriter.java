@@ -10,11 +10,6 @@
 
 package com.manager.subtitles.srt;
 
-import fr.noop.subtitle.base.BaseSubtitleObject;
-import fr.noop.subtitle.model.SubtitleCue;
-import fr.noop.subtitle.model.SubtitleObject;
-import fr.noop.subtitle.model.SubtitleWriter;
-import fr.noop.subtitle.util.SubtitleTimeCode;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -23,7 +18,8 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by clebeaupin on 02/10/15.
  */
-public class SrtWriter implements SubtitleWriter {
+public class SrtWriter {
+    /*
     private String charset; // Charset used to encode file
 
     public SrtWriter(String charset) {
@@ -66,5 +62,5 @@ public class SrtWriter implements SubtitleWriter {
                 timeCode.getMinute(),
                 timeCode.getSecond(),
                 timeCode.getMillisecond());
-    }
+    }*/
 }

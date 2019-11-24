@@ -32,9 +32,9 @@ public class SubtitleTimeCode implements Comparable<SubtitleTimeCode> {
         this.setMillisecond(millisecond);
     }
 
-    public SubtitleTimeCode(LocalTime time) {
+   /* public SubtitleTimeCode(LocalTime time) {
         this(time.getHour(), time.getMinute(), time.getSecond(), 0);
-    }
+    }*/
 
     /**
      *
