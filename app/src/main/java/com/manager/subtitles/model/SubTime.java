@@ -1,12 +1,11 @@
 package com.manager.subtitles.model;
 
-import android.annotation.SuppressLint;
 
 public class SubTime {
-    int heurs; //2
-    int min;//2
-    int secend;//2
-    int mlsecend;//3
+    public int heurs; //2
+    public int min;//2
+    public int secend;//2
+    public int mlsecend;//3
 
     public SubTime(int heurs, int min, int secend, int mlsecend) {
         this.heurs = heurs;
@@ -30,8 +29,5 @@ public class SubTime {
     public int getMlsecend() {
         return mlsecend;
     }
-    @Override
-    public String toString() {
-        return String.format("%02d:%02d:%02d.%03d", this.heurs, this.min, this.secend, this.mlsecend);
-    }
+
 }

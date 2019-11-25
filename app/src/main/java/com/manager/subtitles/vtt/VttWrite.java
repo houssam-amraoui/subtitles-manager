@@ -1,47 +1,57 @@
 package com.manager.subtitles.vtt;
 
+import com.manager.subtitles.model.SubModel;
+import com.manager.subtitles.model.SubTime;
+import com.manager.subtitles.model.SubtitleCue;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+
 public class VttWrite {
 
-    private String charset;
-
-/*
-    public void write(SubtitleObject subtitleObject, OutputStream os)  {
+    public static String write(ArrayList<SubModel> subModelList) throws Exception {
+        StringBuilder builder =new StringBuilder();
         try {
             // Write header
-            os.write(new String("WEBVTT\n\n").getBytes(this.charset));
+            builder.append("WEBVTT\n\n");
 
             // Write cues
-            for (SubtitleCue cue : subtitleObject.getCues()) {
-                if (cue.getId() != null) {
+
+
+            for (int i= 0;i<subModelList.size();i++) {
+                SubModel sub=subModelList.get(i);
+
+                if (sub.id != -1) {
                     // Write number of subtitle
-                    String number = String.format("%s\n", cue.getId());
-                    os.write(number.getBytes(this.charset));
+                    builder.append(sub.id+"\n");
                 }
 
                 // Write Start time and end time
                 String startToEnd = String.format("%s --> %s \n",
-                        this.formatTimeCode(cue.getStartTime()),
-                        this.formatTimeCode(cue.getEndTime()));
-                os.write(startToEnd.getBytes(this.charset));
-
+                        formatTimeCode(sub.timeStart),
+                        formatTimeCode(sub.timeEnd));
+                builder.append(startToEnd);
                 // Write text
-                String text = String.format("%s\n", cue.getText());
-                os.write(text.getBytes(this.charset));
+                String lastLine= "\n";
+                if (i==subModelList.size()-1)
+                    lastLine="";
 
+                String text = String.format("%s"+lastLine, sub.getText());
+                builder.append(text);
                 // Write empty line
-                os.write("\n".getBytes(this.charset));
+                builder.append(lastLine);
             }
-        } catch (UnsupportedEncodingException e) {
-            throw new IOException("Encoding error in input subtitle");
+
+        } catch (Exception e) {
+            throw new Exception("Encoding error in input subtitle");
         }
+        return builder.toString();
     }
 
-    private String formatTimeCode(SubtitleTimeCode timeCode) {
-        return String.format("%02d:%02d:%02d.%03d",
-                timeCode.getHour(),
-                timeCode.getMinute(),
-                timeCode.getSecond(),
-                timeCode.getMillisecond());
-    }*/
+    private static String formatTimeCode(SubTime time) {
+        return String.format("%02d:%02d:%02d.%03d", time.heurs, time.min, time.secend, time.mlsecend);
+    }
 
 }

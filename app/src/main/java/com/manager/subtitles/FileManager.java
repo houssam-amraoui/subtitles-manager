@@ -25,8 +25,6 @@ public class FileManager {
             } catch (IOException e) {
             }
 
-        Date date=new Date(System.currentTimeMillis());
-        String textdate= date.toLocaleString()+"  :"+text+"\n";
         FileOutputStream fos = null;
 
         try {
@@ -38,7 +36,7 @@ public class FileManager {
 */
     FileOutputStream fOut = new FileOutputStream(myFile,true);
     OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-    myOutWriter.write(textdate);
+    myOutWriter.write(text);
     myOutWriter.close();
     fOut.close();
 
@@ -82,7 +80,7 @@ public class FileManager {
                 while ((text = br.readLine()) != null) {
                     sb.append(text).append("\n");
                 }
-                return sb.toString()+ " en :  "+isr.getEncoding();
+                return sb.toString();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

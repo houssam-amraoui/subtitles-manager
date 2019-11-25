@@ -25,7 +25,7 @@ public class VttRead {
         CLOSE
     }
 
-    public ArrayList<SubModel> parse(String filetext) throws Exception {
+    public static ArrayList<SubModel> parse(String filetext) throws Exception {
         // Create srt object
         ArrayList<SubModel> list = new ArrayList<SubModel>();
 
@@ -75,14 +75,14 @@ public class VttRead {
             if (cursorStatus == CursorStatus.CUE_ID) {
 
                 if (textLine.length() == 23 || textLine.substring(10, 13).equals("-->")) {
-                    subModel.setTimeStart(this.parseTimeCode(textLine.substring(0, 9),false));
-                    subModel.setTimeEnd(this.parseTimeCode(textLine.substring(14),false));
+                    subModel.setTimeStart(parseTimeCode(textLine.substring(0, 9),false));
+                    subModel.setTimeEnd(parseTimeCode(textLine.substring(14),false));
                     cursorStatus = CursorStatus.CUE_TIMECODE;
                     continue;
                 }else
                 if (textLine.length() == 29 || textLine.substring(13, 16).equals("-->")) {
-                    subModel.setTimeStart(this.parseTimeCode(textLine.substring(0, 12),true));
-                    subModel.setTimeEnd(this.parseTimeCode(textLine.substring(17),true));
+                    subModel.setTimeStart(parseTimeCode(textLine.substring(0, 12),true));
+                    subModel.setTimeEnd(parseTimeCode(textLine.substring(17),true));
                     cursorStatus = CursorStatus.CUE_TIMECODE;
                     continue;
                 }else
@@ -95,7 +95,7 @@ public class VttRead {
             }
 
             // Enf of subModel
-            if (((cursorStatus == CursorStatus.CUE_TIMECODE || cursorStatus == CursorStatus.CUE_TEXT) && textLine.isEmpty()) || i==ss.length-1) {
+            if (((cursorStatus == CursorStatus.CUE_TIMECODE || cursorStatus == CursorStatus.CUE_TEXT) && textLine.isEmpty())) {
                 // End of subModel
                 // Process multilines text in one time
                 // A class or a style can be applied for more than one line
@@ -115,7 +115,12 @@ public class VttRead {
                 }
 
                 subModelText += textLine;
+
+
                 cursorStatus = CursorStatus.CUE_TEXT;
+                if(!textLine.isEmpty() && i==ss.length-1){
+                    subModel.lines.add(subModelText);
+                }
                 continue;
             }
 
@@ -262,7 +267,7 @@ public class VttRead {
 // 123456789abc
 // 00:01:21.456 --> 00:01:23.417
 // 01:21.456 --> 01:23.417
-    private SubTime parseTimeCode(String timeCodeString,boolean withHour) throws Exception {
+    private static SubTime parseTimeCode(String timeCodeString, boolean withHour) throws Exception {
         if (withHour){
         try {
             int hour = Integer.parseInt(timeCodeString.substring(0, 2));
