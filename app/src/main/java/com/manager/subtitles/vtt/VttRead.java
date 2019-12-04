@@ -273,7 +273,7 @@ public class VttRead {
             int hour = Integer.parseInt(timeCodeString.substring(0, 2));
             int minute = Integer.parseInt(timeCodeString.substring(3, 5));
             int second = Integer.parseInt(timeCodeString.substring(6, 8));
-            int millisecond = Integer.parseInt(timeCodeString.substring(9, 13));
+            int millisecond = Integer.parseInt(timeCodeString.substring(9, 12));
             return new SubTime(hour, minute, second, millisecond);
         } catch (NumberFormatException e) {
             throw new Exception(String.format(

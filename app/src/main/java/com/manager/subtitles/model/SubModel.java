@@ -44,4 +44,9 @@ public class SubModel {
                 ll+=lines.get(i);
         return ll;
     }
+    public void setText(String text) {
+        String [] ll=text.split("\n");
+        for (int i=0;i<ll.length;i++)
+            lines.add(ll[i]);
+    }
 }
