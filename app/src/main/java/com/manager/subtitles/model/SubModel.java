@@ -1,14 +1,17 @@
 package com.manager.subtitles.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SubModel {
+public class SubModel implements Serializable {
     public int id;
+    public int num;
+    public String lang;
     public SubTime timeStart;
     public SubTime timeEnd;
-    public ArrayList<String> lines = new ArrayList<>();
+    public String lines ;
 
-    public SubModel(int id, SubTime timeStart, SubTime timeEnd, ArrayList<String> lines) {
+    public SubModel(int id, SubTime timeStart, SubTime timeEnd, String lines) {
         this.id = id;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
@@ -18,8 +21,8 @@ public class SubModel {
     public SubModel() {
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setNum(int num) {
+        this.num = num;
     }
 
     public void setTimeStart(SubTime timeStart) {
@@ -30,23 +33,15 @@ public class SubModel {
         this.timeEnd = timeEnd;
     }
 
-    public void setLines(ArrayList<String> lines) {
+    public void setText(String lines) {
         this.lines = lines;
     }
 
 
     public String getText() {
-        String ll="";
-        for (int i=0;i<lines.size();i++)
-            if (i<lines.size()-1)
-                ll+=lines.get(i)+"\n";
-            else
-                ll+=lines.get(i);
-        return ll;
+        return lines;
     }
-    public void setText(String text) {
-        String [] ll=text.split("\n");
-        for (int i=0;i<ll.length;i++)
-            lines.add(ll[i]);
-    }
+
+
+
 }

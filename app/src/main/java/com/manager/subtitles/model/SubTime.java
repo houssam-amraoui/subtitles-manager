@@ -30,4 +30,7 @@ public class SubTime {
         return mlsecend;
     }
 
+    public String getDefaultString() {
+        return String.format("%02d:%02d:%02d:%03d", heurs, min, secend, mlsecend);
+    }
 }

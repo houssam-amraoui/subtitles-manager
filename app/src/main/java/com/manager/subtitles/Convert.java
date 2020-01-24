@@ -11,9 +11,24 @@
 package com.manager.subtitles;
 
 
+import com.manager.subtitles.model.GoogleSubModel;
+import com.manager.subtitles.model.SubFile;
+import com.manager.subtitles.model.SubModel;
+import com.manager.subtitles.vtt.VttRead;
+import com.manager.subtitles.vtt.VttWrite;
+
+import java.util.ArrayList;
+
 public class Convert {
 
 
+    public static ArrayList<SubModel> VttTextToSubModel(String txt,String lang) throws Exception {
+        return VttRead.parse(txt,lang);
+    }
+     String SubModelToVttText(ArrayList<SubModel> txt) throws Exception {
+        return VttWrite.write(txt);
+    }
+    
 
 }
 

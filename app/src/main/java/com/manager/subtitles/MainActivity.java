@@ -1,45 +1,76 @@
 package com.manager.subtitles;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.manager.subtitles.adapters.FileAdapter;
 import com.manager.subtitles.model.SubModel;
-import com.manager.subtitles.vtt.VttParser;
+import com.manager.subtitles.sqlite.Sql;
 import com.manager.subtitles.vtt.VttRead;
 import com.manager.subtitles.vtt.VttWrite;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    TextView tt;
-    ArrayList<SubModel> subModels;
+    FileAdapter adapter;
+    Sql sql;
+    RecyclerView recyclerView ;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        tt=findViewById(R.id.ttte);
-        VttRead parser =new VttRead();
-        String a="";
-        a=FileManager.load("122en");
-        //FileManager.save("subarUtf8",a);
-        try {
-            subModels=VttRead.parse(a);
-            String ad =VttWrite.write(subModels);
-            FileManager.save("suben out", ad );
-            tt.setText(get1(a));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        setContentView(R.layout.home);
+        sql = Sql.Getnewinstans(this);
+      //  if (sql.getTableCount(Sql.File) < 1)
+     //   sql.addAll();
+        adapter = new FileAdapter(this,sql.getFilleEnly());
+        recyclerView = findViewById(R.id.rev);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        
     }
 
-    public String get1(String text){
-        String[] ss = text.split("\n");
-        String result ="";
-        for (int i= 0;i< ss.length;i++)
-            result+=i+". "+ss[i]+ "\n";
-        return result;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_setting,menu);
+
+        return super.onCreateOptionsMenu(menu);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id){
+            case R.id.in :
+                startActivity(new Intent(MainActivity.this,ImportActivity.class));
+                break;
+            case R.id.ex :
+
+                break;
+            case R.id.se :
+
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        adapter.setlist(sql.getFilleEnly());
+        adapter.notifyDataSetChanged();
+        super.onResume();
+    }
+
+
 
 }

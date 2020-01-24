@@ -1,3 +1,171 @@
 <resources>
     <string name="app_name">subtitles manager</string>
+
+    <string name="alrtreset_titel">إستعادة الإعدادات الإفتراضية</string>
+    <string name="alrtreset_msg">هل أنت متأكد من حذف الإعدادات الحالية</string>
+
+    <string name="yas">نعم</string>
+    <string name="no">لا</string>
+
+    <string name="email_em">achraflamrouhi@gmail.com</string>
+    <string name="email_text">قدم لنا رايا او فكره لتطوير تطبيق</string>
+
+    <string name="chose_app">فتح بواسطة</string>
+
+    <string name="close_app">اضغط مرة أخرى للخروج</string>
+
+    <string name="link_app">https://play.google.com/store/apps/details?id=com.achraf.a2bacenglishblmention</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_fav">Favourite</string>
+    <string name="menu_lait">Watch Later</string>
+    <string name="menu_appa">Grammar</string>
+    <string name="menu_gamea">National Exams</string>
+    <string name="menu_gamepc">Exercises</string>
+    <string name="menu_apppc">Writing</string>
+    <string name="menu_apppce">Comprehention</string>
+    <string name="menu_appfo">Functions</string>
+    <string name="menu_appvo">Vocabulary</string>
+
+    <string name="menu_nav_share">Share</string>
+    <string name="menu_nav_send">Send</string>
+
+    <string name="settings_general">عام</string>
+    <string name="settings_rowviewitem">شكل العناصر</string>
+    <string name="settings_nbp">عدد العناصر في الصفحه</string>
+    <string name="settings_notification">الاشعارات</string>
+    <string name="settings_on">مفعلة</string>
+    <string name="settings_off">غير مفعلة</string>
+    <string name="settings_notiview">شكل الاشعار</string>
+    <string name="settings_vibrat_noti">الاهتزاز عند وصول الاشعار</string>
+    <string name="settings_choose">خيارات التطبيق</string>
+    <string name="settings_styleapp">الستايل الخاص بالتطبيق</string>
+    <string name="settings_animapp">حركة العناصر</string>
+    <string name="settings_other">غير ذلك</string>
+    <string name="settings_feedback">ردود الفعل</string>
+    <string name="settings_help">مساعدة</string>
+    <string name="settings_privacy_policy">سياسة الخصوصية</string>
+    <string name="settings_resetapp">استعادة الإعدادات الافتراضية</string>
+    <string name="settings_about">حول</string>
+
+    <string name="ok">حسنا</string>
+    <string name="cancel">إلغاء</string>
+    <string name="comleted_add_fav">تم اضافة العنصر الى قائمة المفضلة-Favourite</string>
+    <string name="comleted_add_lait">تم اضافة العنصر الى قائمة المشاهدة لاحقا-Watch Later</string>
+    <string name="comleted_remove">تم ازالة العنصر</string>
+
+    <string name="no_net">لا توجد انترنت</string>
+    <string name="no_net_desc">قم بتشغيل الانترنت مرة واحدة و سيحفض التطبيق كل المعطيات الازمة وستتمكن من تشغيل التطبيق بدون انترنت في المرة القادمة</string>
+
+    <string name="download">تحميل</string>
+
+    <string name="no_imag_desc">لم يتم اجاد اي صور خاصة بهدا المنشور</string>
+    <string name="no_imag">لا توجد صور</string>
+
+    <string name="timing">مزامنة</string>
+    <string name="no_timing">لا يمكن المزامنة بدون انترنت</string>
+    <string name="timing_complet">تمت المزامنة</string>
+    <string name="ref_complet">تم التحديث</string>
+
+    <string name="cominucat">Communiction</string>
+    <string name="wite">انتضر من فضلك …</string>
+
+    <string name="this_ferst_image">هذه أول صورة بالفعل</string>
+    <string name="this_last_image">هذه أخر صورة بالفعل</string>
+    <string name="image_allready_exist">الصورة موجودة بالفعل</string>
+    <string name="image_is_saved">تم حفض الصورة : </string>
+    <string name="accept">قبول</string>
+    <string name="dinaid">رفض</string>
+    <string name="mesage_permition">لكي يستطيع التطبيق حفض الصور من الضروري ان يتم السماح له بالوصول إلى الذاكرة</string>
+    <string name="mesage_permition_titel">سماحية الوصول</string>
+    <string name="in_downlod"> في ملف التحميلات</string>
+
+    <string name="getfreecoin">جمع النقاط من هنا</string>
+    <string name="freecoinvaid">متاحة خلال %d</string>
+
+
+
+
+    <string name="tranzission_titel">trtitel</string>
+    <string name="tranzission_date">trdate</string>
+    <string name="tranzission_card">trcard</string>
+
+
+
+    <string-array name="view_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+
+    </string-array>
+    <string-array name="view_values">
+        <item>العنصر الافتراضي</item>
+        <item>عنصر مع صوره صغيره</item>
+        <item>عنصر بدون صوره</item>
+    </string-array>
+    <string-array name="noti_entryvalues">
+        <item>0</item>
+        <item>1</item>
+
+    </string-array>
+    <string-array name="noti_values">
+        <item>اشعار مع صوره كبيره</item>
+        <item>اشعار عادي</item>
+    </string-array>
+    <string-array name="leng_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+    <string-array name="leng_values">
+        <item>العربيه</item>
+        <item>الانجليزيه</item>
+        <item>الفرنسيه</item>
+
+    </string-array>
+    <string-array name="style_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="style_values">
+        <item>style 1</item>
+        <item>style 2</item>
+        <item>style 3</item>
+        <item>style 4</item>
+    </string-array>
+    <string-array name="nbp_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="nbp_values">
+        <item>15</item>
+        <item>30</item>
+        <item>50</item>
+        <item>الكل</item>
+    </string-array>
+    <string-array name="anim_entryvalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="anim_values">
+        <item>بدون حركة</item>
+        <item>حركة 2</item>
+        <item>حركة 3</item>
+        <item>حركة 4</item>
+    </string-array>
+    <string-array name="time_off">
+        <item>منذ يوم</item>
+        <item>منذ يومين</item>
+        <item>منذ 3 ايام</item>
+        <item>منذ 4 ايام</item>
+        <item>منذ 5 ايام</item>
+        <item>منذ 6 ايام</item>
+        <item>منذ اسبوع</item>
+    </string-array>
 </resources>

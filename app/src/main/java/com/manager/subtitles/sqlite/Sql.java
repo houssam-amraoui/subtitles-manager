@@ -1,4 +1,4 @@
-package com.manager.subtitles;
+package com.manager.subtitles.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.manager.subtitles.model.GoogleSubFile;
+import com.manager.subtitles.model.GoogleSubModel;
 import com.manager.subtitles.model.SubFile;
+import com.manager.subtitles.model.SubFileOnly;
 import com.manager.subtitles.model.SubModel;
 import com.manager.subtitles.model.SubTime;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ public class Sql extends SQLiteOpenHelper {
     public static final String TimeStart= "timeStart"  ;
     public static final String TimeEnd= "timeEnd";
     public static final String Body= "body";
+    public static final String sublang="lang";
     public static final String Refidfile= Idfile;
 
     private Sql(Context context) {
@@ -49,8 +53,9 @@ public class Sql extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+
         db.execSQL("CREATE TABLE if not Exists `file` (`idfile` INTEGER PRIMARY KEY AUTOINCREMENT,name varchar(20) , `path` varchar ( 200 ));");
-        db.execSQL("CREATE TABLE if not Exists `subitem` (`idsubitem` INTEGER PRIMARY KEY AUTOINCREMENT,`numsub` INTEGER , timeStart varchar(20) , timeEnd varchar(20) ,`body` Text,`idfile`int,FOREIGN KEY(`idfile`) REFERENCES `file`(`idfile`));");
+        db.execSQL("CREATE TABLE if not Exists `subitem` (`idsubitem` INTEGER PRIMARY KEY AUTOINCREMENT,`numsub` INTEGER , timeStart varchar(20) , timeEnd varchar(20) ,`body` Text ,`lang` varchar(20),`idfile`int,FOREIGN KEY(`idfile`) REFERENCES `file`(`idfile`));");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -58,17 +63,39 @@ public class Sql extends SQLiteOpenHelper {
     }
     public void DeletAll(){
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("DELETE FROM imagel");
-        database.execSQL("delete from replay");
-        database.execSQL("DELETE FROM comment");
-        database.execSQL("delete from userapp");
+      //  database.execSQL("drop Table file");
+     //   database.execSQL("drop Table subitem");
+        database.execSQL("DELETE FROM file");
+        database.execSQL("DELETE FROM subitem");
     }
-    public void addAll(){
+   /* public void addAll(){
         SQLiteDatabase database = getWritableDatabase();
-        database.execSQL("insert into userapp (nom,prenom,datene) values('houssam','amraoui','15/04/1999');\n" +
-                "INSERT into comment(body,pdate,nblike,iduser) values ('hello comment','17/08/2019',1,1);\n" +
-                "insert into replay values (1,'hello replay','17/08/2019',1,1);\n" +
-                "insert into imagel values (1,'image.com',1);");
+        database.execSQL("INSERT into  file (name,path) VALUES \n" +
+                "(\"houssam\",\"c://sdfsdfdf\"),\n" +
+                "(\"kchima\",\"c://sdfsddfdfdf\"),\n" +
+                "(\"amraoui\",\"c://sdfssddfsfdf\");\n");
+                database.execSQL("insert INTO subitem (numsub, timeStart,timeEnd,body,lang,idfile) VALUES\n" +
+                "(1,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",1),\n" +
+                "(2,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",1),\n" +
+                "(3,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",1),\n" +
+                "(4,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",1),\n" +
+                "(1,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",2),\n" +
+                "(2,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",2),\n" +
+                "(3,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",2),\n" +
+                "(4,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",2),\n" +
+                "(5,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",2),\n" +
+                "(1,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3),\n" +
+                "(2,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3),\n" +
+                "(3,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3),\n" +
+                "(4,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3),\n" +
+                "(5,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3);" );
+    }
+*/
+    public void addAllFile(ArrayList<SubFile> subFiles){
+
+        for (SubFile subFile:subFiles) {
+            addFile(subFile);
+        }
     }
 
     public void addFile(SubFile file){
@@ -88,33 +115,38 @@ public class Sql extends SQLiteOpenHelper {
     }
 
     private void addSubModel(SubModel subModel , int idfile) {
+
         SQLiteDatabase database = getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put(Numsub,subModel.id);
+        values.put(Numsub,subModel.num);
+        values.put(sublang,subModel.lang);
         values.put(TimeStart,TimeWriter(subModel.timeStart));
         values.put(TimeEnd,TimeWriter(subModel.timeEnd));
         values.put(Body,subModel.getText());
         values.put(Refidfile,idfile);
-        database.insert(File,null,values);
+        database.insert(Subitem,null,values);
         values.clear();
     }
-    private int getIdFileFromFile(String namefile){
+    public int getIdFileFromFile(String namefile){
         SQLiteDatabase database = getReadableDatabase();
-
         Cursor re = database.rawQuery("SELECT idfile FROM file where name='"+namefile+"' LIMIT 1",null);
         re.moveToFirst();
-        return re.getInt(0);
+        return re.getInt(re.getColumnIndex(Idfile));
     }
 
-    public ArrayList<SubModel> getSubModel(String fileid){
+    public ArrayList<SubModel> getSubModel(String fileid ,String lang){
         ArrayList<SubModel> subModels = new ArrayList<>();
 
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT * FROM subitem WHERE idfile ='"+fileid+"'",null);
+        Cursor re = database.rawQuery("SELECT * FROM subitem WHERE idfile ='"+fileid+"' and lang ='"+lang+"'",null);
+       // Cursor re = database.rawQuery("SELECT * FROM subitem",null);
+        int rr = re.getCount();
         re.moveToFirst();
         while (!re.isAfterLast()){
             SubModel subModel=new SubModel();
             subModel.id= re.getInt(re.getColumnIndex(Idsubitem));
+            subModel.num = re.getInt(re.getColumnIndex(Numsub));
+            subModel.lang = re.getString(re.getColumnIndex(sublang));
             subModel.timeStart= TimeReader(re.getString(re.getColumnIndex(TimeStart)));
             subModel.timeEnd=  TimeReader(re.getString(re.getColumnIndex(TimeStart)));
             subModel.setText(re.getString(re.getColumnIndex(Body)));
@@ -148,9 +180,20 @@ public class Sql extends SQLiteOpenHelper {
         int second = Integer.parseInt(timeCodeString.substring(6, 8));
         int millisecond = Integer.parseInt(timeCodeString.substring(9, 12));
         return new SubTime(hour, minute, second, millisecond);
-
     }
-    public ArrayList<SubFile> getAllFille(){
+
+    public SubFile getFilleWhithPath(String path , String lang){
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor re = database.rawQuery("SELECT * FROM file where path = "+path+" LIMIT 1",null);
+        re.moveToFirst();
+            SubFile subFile=new SubFile();
+            subFile.name = re.getString(re.getColumnIndex(Name));
+            subFile.path = re.getString(re.getColumnIndex(Path));
+            subFile.subModels = getSubModel(re.getString(re.getColumnIndex(Idfile)),lang);
+        return subFile;
+    }
+
+    public ArrayList<SubFile> getAllFille( String lang){
         ArrayList<SubFile> subFiles = new ArrayList<>();
         SQLiteDatabase database = getReadableDatabase();
         Cursor re = database.rawQuery("SELECT * FROM file",null);
@@ -160,10 +203,45 @@ public class Sql extends SQLiteOpenHelper {
             SubFile subFile=new SubFile();
             subFile.name= re.getString(re.getColumnIndex(Name));
             subFile.path= re.getString(re.getColumnIndex(Path));
-            subFile.subModels= getSubModel(re.getString(re.getColumnIndex(Idfile)));
+            subFile.subModels= getSubModel(re.getString(re.getColumnIndex(Idfile)),lang);
             subFiles.add(subFile);
             re.moveToNext();
         }
         return subFiles;
     }
+    public ArrayList<SubFileOnly> getFilleEnly(){
+        ArrayList<SubFileOnly> subFiles = new ArrayList<>();
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor re = database.rawQuery("SELECT * FROM file",null);
+        re.moveToFirst();
+
+        while (!re.isAfterLast()){
+            SubFileOnly subFile=new SubFileOnly();
+            subFile.iddb= re.getInt(re.getColumnIndex(Idfile))+"";
+            subFile.name= re.getString(re.getColumnIndex(Name));
+            subFile.path= re.getString(re.getColumnIndex(Path));
+            subFiles.add(subFile);
+            re.moveToNext();
+        }
+        return subFiles;
+    }
+
+    public void SubGoogleToDb(ArrayList<GoogleSubFile> txt, String fromlang, String tolang) {
+        ArrayList<SubFile> subFiles =new ArrayList<>();
+        for (GoogleSubFile sub : txt)
+        {
+            SubFile subFile = getFilleWhithPath(sub.filepath,fromlang);
+            for (int i=0;i<sub.googleModels.size();i++){
+            GoogleSubModel model =sub.googleModels.get(i);
+            subFile.subModels.get(i).setText(model.text);
+            subFile.subModels.get(i).lang=tolang;
+            subFiles.add(subFile);
+            }
+
+        }
+        addAllFile(subFiles);
+
+    }
+
+
 }

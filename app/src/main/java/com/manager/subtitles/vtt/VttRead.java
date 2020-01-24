@@ -1,5 +1,7 @@
 package com.manager.subtitles.vtt;
 
+import android.text.Html;
+
 import com.manager.subtitles.model.SubModel;
 import com.manager.subtitles.model.SubTime;
 import com.manager.subtitles.model.SubtitleLine;
@@ -19,21 +21,15 @@ public class VttRead {
         CUE_TEXT;
     }
 
-    private enum TagStatus {
-        NONE,
-        OPEN,
-        CLOSE
-    }
+    public static ArrayList<SubModel> parse(String filetext,String lang) throws Exception {
 
-    public static ArrayList<SubModel> parse(String filetext) throws Exception {
-        // Create srt object
         ArrayList<SubModel> list = new ArrayList<SubModel>();
-
 
         String textLine = "";
         CursorStatus cursorStatus = CursorStatus.NONE;
         SubModel subModel = null;
         String subModelText = "";
+        filetext = filetext.trim();
 
         String[] ss = filetext.split("\n");
 
@@ -47,7 +43,6 @@ public class VttRead {
                 textLine = StringUtils.removeBOM(textLine);
             }
 
-            // All Vtt files start with WEBVTT
             if (cursorStatus == CursorStatus.NONE && textLine.equals("WEBVTT")) {
                 cursorStatus = CursorStatus.SIGNATURE;
                 continue;
@@ -57,19 +52,16 @@ public class VttRead {
                 if (textLine.isEmpty()) {
                     continue;
                 }
-                // New subModel
                 subModel = new SubModel();
                 cursorStatus = CursorStatus.CUE_ID;
 
                 if (textLine.length() < 16 || !textLine.substring(13, 16).equals("-->")) {
                     // First textLine is the subModel number
-                    subModel.setId(Integer.valueOf(textLine));
+                    subModel.setNum(Integer.valueOf(textLine));
                     continue;
                 }
-                // There is no subModel number
             }
 
-            // Second textLine defines the start and end time codes
             // 00:01:21.456 --> 00:01:23.417
             // 01:21.456 --> 01:23.417
             if (cursorStatus == CursorStatus.CUE_ID) {
@@ -87,19 +79,15 @@ public class VttRead {
                     continue;
                 }else
                     throw new Exception(String.format("Timecode textLine is badly formated: %s", textLine));
-
             }
-
             if (cursorStatus == CursorStatus.CUE_TIMECODE && textLine.isEmpty()) {
-                // if line is empty
             }
 
-            // Enf of subModel
             if (((cursorStatus == CursorStatus.CUE_TIMECODE || cursorStatus == CursorStatus.CUE_TEXT) && textLine.isEmpty())) {
-                // End of subModel
-                // Process multilines text in one time
-                // A class or a style can be applied for more than one line
-                subModel.lines.add(subModelText);
+                subModelText = Html.fromHtml(subModelText).toString();
+                subModel.lines=subModelText;
+
+                subModel.lang=lang;
                 list.add(subModel);
                 subModel = null;
                 subModelText = "";
@@ -116,21 +104,54 @@ public class VttRead {
 
                 subModelText += textLine;
 
-
                 cursorStatus = CursorStatus.CUE_TEXT;
                 if(!textLine.isEmpty() && i==ss.length-1){
-                    subModel.lines.add(subModelText);
+                    subModelText = Html.fromHtml(subModelText).toString();
+                    subModel.lines=subModelText;
+                    subModel.lang=lang;
+                    list.add(subModel);
+                    subModel = null;
+                    subModelText = "";
                 }
                 continue;
             }
-
             throw new Exception(String.format("Unexpected line: %s", textLine));
         }
-
         return list;
     }
-/*
-    private List<SubtitleLine> parseCueText(String cueText) {
+// 00:01:21.456 --> 00:01:23.417
+// 01:21.456 --> 01:23.417
+    private static SubTime parseTimeCode(String timeCodeString, boolean withHour) throws Exception {
+        if (withHour){
+        try {
+            int hour = Integer.parseInt(timeCodeString.substring(0, 2));
+            int minute = Integer.parseInt(timeCodeString.substring(3, 5));
+            int second = Integer.parseInt(timeCodeString.substring(6, 8));
+            int millisecond = Integer.parseInt(timeCodeString.substring(9, 12));
+            return new SubTime(hour, minute, second, millisecond);
+        } catch (NumberFormatException e) {
+            throw new Exception(String.format(
+                    "Unable to parse time code: %s", timeCodeString));
+        }
+    }else {
+            try {
+                int hour = Integer.parseInt("00");
+                int minute = Integer.parseInt(timeCodeString.substring(0, 2));
+                int second = Integer.parseInt(timeCodeString.substring(3, 5));
+                int millisecond = Integer.parseInt(timeCodeString.substring(6, 9));
+                return new SubTime(hour, minute, second, millisecond);
+            } catch (NumberFormatException e) {
+                throw new Exception(String.format(
+                        "Unable to parse time code: %s", timeCodeString));
+            }
+        }
+    }
+
+}
+
+
+
+/* private List<SubtitleLine> parseCueText(String cueText) {
         String text = "";
         List<String> tags = new ArrayList<>();
         List<SubtitleLine> cueLines = new ArrayList<>();
@@ -262,35 +283,4 @@ public class VttRead {
         }
 
         return cueLines;
-    }
-    */
-// 123456789abc
-// 00:01:21.456 --> 00:01:23.417
-// 01:21.456 --> 01:23.417
-    private static SubTime parseTimeCode(String timeCodeString, boolean withHour) throws Exception {
-        if (withHour){
-        try {
-            int hour = Integer.parseInt(timeCodeString.substring(0, 2));
-            int minute = Integer.parseInt(timeCodeString.substring(3, 5));
-            int second = Integer.parseInt(timeCodeString.substring(6, 8));
-            int millisecond = Integer.parseInt(timeCodeString.substring(9, 12));
-            return new SubTime(hour, minute, second, millisecond);
-        } catch (NumberFormatException e) {
-            throw new Exception(String.format(
-                    "Unable to parse time code: %s", timeCodeString));
-        }
-    }else {
-            try {
-                int hour = Integer.parseInt("00");
-                int minute = Integer.parseInt(timeCodeString.substring(0, 2));
-                int second = Integer.parseInt(timeCodeString.substring(3, 5));
-                int millisecond = Integer.parseInt(timeCodeString.substring(6, 9));
-                return new SubTime(hour, minute, second, millisecond);
-            } catch (NumberFormatException e) {
-                throw new Exception(String.format(
-                        "Unable to parse time code: %s", timeCodeString));
-            }
-        }
-    }
-
-}
+    } */
