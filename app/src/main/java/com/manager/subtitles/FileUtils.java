@@ -33,8 +33,9 @@ public class FileUtils {
         }
         return fff;
     }
+
     public static void saveFiles(String filename,String text , boolean isAppand) {
-        File myFile = new File(Environment.getExternalStorageDirectory()+"/Sub/"+filename+".txt");
+        File myFile = new File(Environment.getExternalStorageDirectory()+"/Sub/"+filename.replace(".vtt",".txt"));
         try {
             if(!myFile.exists()){
 

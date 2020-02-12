@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,ImportActivity.class));
                 break;
             case R.id.ex :
-
+                startActivity(new Intent(MainActivity.this,FusionActivity.class));
                 break;
             case R.id.se :
 

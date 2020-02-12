@@ -31,6 +31,9 @@
         <activity android:name=".ImportActivity"
             >
         </activity>
+        <activity android:name=".FusionActivity"
+            >
+        </activity>
     </application>
 
 </manifest>

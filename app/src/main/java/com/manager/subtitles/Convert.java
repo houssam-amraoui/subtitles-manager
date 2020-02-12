@@ -25,7 +25,7 @@ public class Convert {
     public static ArrayList<SubModel> VttTextToSubModel(String txt,String lang) throws Exception {
         return VttRead.parse(txt,lang);
     }
-     String SubModelToVttText(ArrayList<SubModel> txt) throws Exception {
+    public static String SubModelToVttText(ArrayList<SubModel> txt) throws Exception {
         return VttWrite.write(txt);
     }
     

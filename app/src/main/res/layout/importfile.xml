@@ -6,22 +6,24 @@
 
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/rgroup">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/im"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Import" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/ex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="export" />
     </RadioGroup>
 
     <LinearLayout
+        android:id="@+id/L1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -84,12 +86,13 @@
 
 
         <Button
-            android:id="@+id/btnAddAll2"
+            android:id="@+id/btnAddAll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add All" />
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/L2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -106,26 +109,26 @@
             android:layout_height="wrap_content"/>
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/cbfr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="fr" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/cben"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="en" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="ar" />
 
 
         <Button
-            android:id="@+id/btnAddAll"
+            android:id="@+id/btnExportAll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="export All" />

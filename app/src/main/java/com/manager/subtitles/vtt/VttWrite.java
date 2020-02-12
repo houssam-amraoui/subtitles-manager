@@ -16,7 +16,7 @@ public class VttWrite {
                 SubModel sub=subModelList.get(i);
                 if (sub.id != -1) {
                     // Write number of subtitle
-                    builder.append(sub.id+"\n");
+                    builder.append(sub.num+"\n");
                 }
                 // Write Start time and end time
                 String startToEnd = String.format("%s --> %s \n",
