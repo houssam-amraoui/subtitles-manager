@@ -91,20 +91,22 @@ public class Sql extends SQLiteOpenHelper {
                 "(5,\"00:00:00.000\",\"00:00:00.000\",\"holloknjdb sdifsidj\",\"EN\",3);" );
     }
 */
-    public void addAllFile(ArrayList<SubFile> subFiles){
+    public void addAllFile(ArrayList<SubFile> subFiles,boolean isFileExist){
 
         for (SubFile subFile:subFiles) {
-            addFile(subFile);
+            addFile(subFile, isFileExist);
         }
     }
 
-    public void addFile(SubFile file){
-        SQLiteDatabase database = getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put(Name,file.name);
-        values.put(Path,file.path);
-        database.insert(File,null,values);
-        values.clear();
+    public void addFile(SubFile file,boolean isFileExist){
+        if(!isFileExist) {
+            SQLiteDatabase database = getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(Name, file.name);
+            values.put(Path, file.path);
+            database.insert(File, null, values);
+            values.clear();
+        }
         addAllSubModel(file.subModels,getIdFileFromFile(file.name));
     }
 
@@ -184,7 +186,7 @@ public class Sql extends SQLiteOpenHelper {
 
     public SubFile getFilleWhithPath(String path , String lang){
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT * FROM file where path = "+path+" LIMIT 1",null);
+        Cursor re = database.rawQuery("SELECT * FROM file where path = '"+path+"' LIMIT 1",null);
         re.moveToFirst();
             SubFile subFile=new SubFile();
             subFile.name = re.getString(re.getColumnIndex(Name));
@@ -235,12 +237,15 @@ public class Sql extends SQLiteOpenHelper {
             GoogleSubModel model =sub.googleModels.get(i);
             subFile.subModels.get(i).setText(model.text);
             subFile.subModels.get(i).lang=tolang;
-            subFiles.add(subFile);
             }
-
+            subFiles.add(subFile);
         }
-        addAllFile(subFiles);
+        addAllFile(subFiles,true);
 
+    }
+    public boolean isLangeExist(String lang){
+
+        return false;
     }
 
 

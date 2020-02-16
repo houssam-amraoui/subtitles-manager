@@ -20,7 +20,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.manager.subtitles.model.GoogleSubFile;
+import com.manager.subtitles.model.GoogleSubModel;
 import com.manager.subtitles.model.SubFile;
+import com.manager.subtitles.model.SubModel;
 import com.manager.subtitles.sqlite.Sql;
 import java.io.File;
 import java.util.ArrayList;
@@ -28,7 +32,7 @@ import java.util.List;
 
 
 public class ImportActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String[] lang = new String[]{"EN", "AR", "FR"};
+    public final String[] lang = new String[]{"EN", "AR", "FR"};
     private final String[] type = new String[]{".vtt", ".srt"};
 
     Spinner s1,s2;
@@ -91,7 +95,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         s1.setAdapter(adapter);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,type);
         s2.setAdapter(adapter);
-        getpermision();
+        caneAdd=  FileUtils.getRWpermition(this);
         //s1.getSelectedItemPosition()
     }
 
@@ -113,8 +117,30 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.btnExportAll :
-                if (caneAdd)
-                    exportFileFromDb();
+                if (caneAdd){
+                    ArrayList<Integer> in = new ArrayList<>();
+
+                    if(cbar.isChecked()&&cbfr.isChecked()&&cben.isChecked()) {
+                        return;
+                    }
+                    if(!(cbar.isChecked()||cbfr.isChecked()||cben.isChecked())) {
+                        return;
+                    }
+                    if(cben.isChecked()) {
+                        in.add(0);
+                    }
+                    if(cbar.isChecked()) {
+                        in.add(1);
+                    }
+                    if(cbfr.isChecked()) {
+                        in.add(2);
+                    }
+                    if (in.size()==2)
+                        exportFileFromDb(in.get(0),in.get(1));
+                    else
+                        exportFileFromDb(in.get(0));
+
+                }
                 break;
         }
     }
@@ -137,7 +163,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             case 123: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED&&
                         grantResults[1] == PackageManager.PERMISSION_GRANTED ) {
-                    getpermision();
+                    FileUtils.getRWpermition(this);
                 } else {
                     Toast.makeText(this, "denaid", Toast.LENGTH_SHORT).show();
                 }
@@ -145,32 +171,6 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
         super.onRequestPermissionsResult(requestCode,permissions,grantResults);
-    }
-    private void getpermision(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
-                    ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(getResources().getString(R.string.mesage_permition))
-                        .setIcon(R.drawable.ic_warning)
-                        .setTitle(getResources().getString(R.string.mesage_permition_titel))
-                        .setPositiveButton(getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(ImportActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
-                            }
-                        }).setNegativeButton(getResources().getString(R.string.dinaid), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                }).show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
-            }
-        } else {
-            caneAdd = true;
-        }
     }
 
     private void addFileToDb(){
@@ -190,11 +190,11 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             }
             files.add(ff);
         }
-        db.addAllFile(files);
+        db.addAllFile(files,false);
     }
 
-    private void exportFileFromDb() {
-        ArrayList<SubFile> files = db.getAllFille(lang[2]);
+    private void exportFileFromDb(int nlang) {
+        ArrayList<SubFile> files = db.getAllFille(lang[nlang]);
         for(SubFile subFile: files) {
             String a= null;
             try {
@@ -208,7 +208,37 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
+    private void exportFileFromDb(int nlang, int nlang2) {
+        // file2 -> file
+        ArrayList<SubFile> files = db.getAllFille(lang[nlang]);
+        ArrayList<SubFile> files2 = db.getAllFille(lang[nlang2]);
+        if (files.size() != files2.size())
+            return;
+
+        ArrayList<SubFile> subFiles =new ArrayList<>();
+
+        for (int j=0;j<files.size();j++)
+        {
+            SubFile subFile = files.get(j);
+            SubFile subFile2 = files2.get(j);
+            for (int i=0;i<subFile.subModels.size();i++){
+                SubModel model =subFile2.subModels.get(i);
+                subFile.subModels.get(i).appendText(model.lines);
+            }
+            subFiles.add(subFile);
+        }
 
 
+        for(SubFile subFile: subFiles) {
+            String a= null;
+            try {
+                a = Convert.SubModelToVttText(subFile.subModels);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+            FileUtils.saveFiles(subFile.path,a,false);
+        }
 
+    }
 }

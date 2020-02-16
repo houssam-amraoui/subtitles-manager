@@ -36,6 +36,9 @@ public class SubModel implements Serializable {
     public void setText(String lines) {
         this.lines = lines;
     }
+    public void appendText(String lines) {
+        this.lines += "\n"+lines;
+    }
 
 
     public String getText() {

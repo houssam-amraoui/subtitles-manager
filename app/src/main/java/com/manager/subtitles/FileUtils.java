@@ -1,9 +1,18 @@
 package com.manager.subtitles;
 
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Environment;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -35,7 +44,7 @@ public class FileUtils {
     }
 
     public static void saveFiles(String filename,String text , boolean isAppand) {
-        File myFile = new File(Environment.getExternalStorageDirectory()+"/Sub/"+filename.replace(".vtt",".txt"));
+        File myFile = new File(Environment.getExternalStorageDirectory()+"/Sub/"+filename);
         try {
             if(!myFile.exists()){
 
@@ -122,7 +131,8 @@ public class FileUtils {
     }
     public static Intent ChooseFile(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
         return intent;
     }
     public static String getRealpathFromTree(String path){
@@ -135,6 +145,20 @@ public class FileUtils {
             String temp1 = temp[0] ;
             phpath = phpath.replace("emulated/0",temp1+"/");
             path = phpath + path.replace("/tree/"+temp1+":","");
+
+        }
+        return path;
+    }
+    public static String getRealpathForFile(String path){
+        String phpath=Environment.getExternalStorageDirectory().getPath();
+        if(path.contains("/document/primary:"))
+            path= phpath+"/"+path.replace("/document/primary:","");
+        else{
+            String [] temp = path.split("/");
+            temp = temp[2].split(":");
+            String temp1 = temp[0] ;
+            phpath = phpath.replace("emulated/0",temp1+"/");
+            path = phpath + path.replace("/document/"+temp1+":","");
 
         }
         return path;
@@ -192,6 +216,37 @@ public class FileUtils {
         @Override
         public boolean accept(File pathname){ return pathname.isDirectory();
         }};
+
+    public static boolean getRWpermition(final AppCompatActivity activity){
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) &&
+                    ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setMessage(activity.getResources().getString(R.string.mesage_permition))
+                        .setIcon(R.drawable.ic_warning)
+                        .setTitle(activity.getResources().getString(R.string.mesage_permition_titel))
+                        .setPositiveButton(activity.getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+                            }
+                        }).setNegativeButton(activity.getResources().getString(R.string.dinaid), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                }).show();
+            } else {
+                ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 123);
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+
+
 }
 
 

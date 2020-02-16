@@ -43,7 +43,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/t1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,7 +51,7 @@
 
 
             <Button
-                android:id="@+id/btnAdd"
+                android:id="@+id/pathim"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -59,19 +59,35 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="files langue"
-            android:textSize="20dp" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <Spinner
-            android:id="@+id/langSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="trenslated from"
+                android:textSize="20dp" />
+
+            <Spinner
+                android:id="@+id/langSpinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="to"
+                android:textSize="20dp" />
+
+            <Spinner
+                android:id="@+id/langSpinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btnAddAll"
+            android:id="@+id/btnimport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Import Fille" />
@@ -103,7 +119,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/t2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -111,7 +127,7 @@
 
 
             <Button
-                android:id="@+id/btnAdd1"
+                android:id="@+id/pathex"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -126,12 +142,12 @@
             android:textSize="20dp" />
 
         <Spinner
-            android:id="@+id/langSpinner1"
+            android:id="@+id/langSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
-            android:id="@+id/btnAddAll1"
+            android:id="@+id/btnexport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Exporte Fille" />
