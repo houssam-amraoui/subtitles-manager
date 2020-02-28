@@ -21,8 +21,9 @@ public class VttRead_No_id {
 
     public static ArrayList<SubModel> parse(String filetext,String lang) throws Exception {
 
-        ArrayList<SubModel> list = new ArrayList<SubModel>();
+        ArrayList<SubModel> list = new ArrayList<>();
 
+        boolean isSubBeging= false;
         String textLine = "";
         CursorStatus cursorStatus = CursorStatus.NONE;
         SubModel subModel = null;
@@ -48,8 +49,10 @@ public class VttRead_No_id {
 
             if (cursorStatus == CursorStatus.SIGNATURE || cursorStatus == CursorStatus.EMPTY_LINE) {
                 if (textLine.isEmpty()) {
+                    isSubBeging=true;
                     continue;
-                }
+                }else if(!isSubBeging) continue;
+
                 subModel = new SubModel();
                 cursorStatus = CursorStatus.CUE_ID;
 

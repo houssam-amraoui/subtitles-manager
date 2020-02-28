@@ -25,6 +25,7 @@ public class VttRead {
 
         ArrayList<SubModel> list = new ArrayList<SubModel>();
 
+        boolean isSubBeging= false;
         String textLine = "";
         CursorStatus cursorStatus = CursorStatus.NONE;
         SubModel subModel = null;
@@ -50,8 +51,10 @@ public class VttRead {
 
             if (cursorStatus == CursorStatus.SIGNATURE || cursorStatus == CursorStatus.EMPTY_LINE) {
                 if (textLine.isEmpty()) {
+                    isSubBeging=true;
                     continue;
-                }
+                }else if(!isSubBeging) continue;
+
                 subModel = new SubModel();
                 cursorStatus = CursorStatus.CUE_ID;
 

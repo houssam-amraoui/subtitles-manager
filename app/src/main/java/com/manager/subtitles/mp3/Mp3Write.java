@@ -5,7 +5,7 @@ import com.manager.subtitles.model.SubTime;
 
 import java.util.ArrayList;
 
-public class mp3Write {
+public class Mp3Write {
 
         public static String write(ArrayList<SubModel> subModelList) throws Exception {
             StringBuilder builder =new StringBuilder();

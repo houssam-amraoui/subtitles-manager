@@ -150,7 +150,7 @@ public class Sql extends SQLiteOpenHelper {
             subModel.num = re.getInt(re.getColumnIndex(Numsub));
             subModel.lang = re.getString(re.getColumnIndex(sublang));
             subModel.timeStart= TimeReader(re.getString(re.getColumnIndex(TimeStart)));
-            subModel.timeEnd=  TimeReader(re.getString(re.getColumnIndex(TimeStart)));
+            subModel.timeEnd=  TimeReader(re.getString(re.getColumnIndex(TimeEnd)));
             subModel.setText(re.getString(re.getColumnIndex(Body)));
             subModels.add(subModel);
             re.moveToNext();
