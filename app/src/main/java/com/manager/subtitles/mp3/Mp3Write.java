@@ -22,7 +22,7 @@ public class Mp3Write {
                     if (i==subModelList.size()-1)
                         lastLine="";
 
-                    String text = String.format("%s"+lastLine, sub.getText());
+                    String text = String.format("%s"+lastLine, sub.getText().replace("\n"," "));
                     builder.append(text);
                     // Write empty line
                     builder.append(lastLine);

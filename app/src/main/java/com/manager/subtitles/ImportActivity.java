@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,9 +34,9 @@ import java.util.List;
 
 public class ImportActivity extends AppCompatActivity implements View.OnClickListener {
     public final String[] lang = new String[]{"EN", "AR", "FR"};
-    private final String[] type = new String[]{".vtt", ".srt"};
-
-    Spinner s1,s2;
+    private final String[] type = new String[]{".vtt", ".vtt",".vtt"};
+    private final String[] typeex = new String[]{".vtt", ".lrc"};
+    Spinner s1,s2,s3;
     Button b1,b2,btnExport;
     TextView t1;
     ArrayAdapter<String> adapter;
@@ -54,6 +55,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.importfile);
         s1 = findViewById(R.id.langSpinner);
         s2 =findViewById(R.id.typeSpinner);
+        s3 = findViewById(R.id.typeSpinnerex);
         b1 = findViewById(R.id.btnAdd);
         b2 = findViewById(R.id.btnAddAll);
         t1 = findViewById(R.id.textView);
@@ -95,6 +97,8 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         s1.setAdapter(adapter);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,type);
         s2.setAdapter(adapter);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,typeex);
+        s3.setAdapter(adapter);
         caneAdd=  FileUtils.getRWpermition(this);
         //s1.getSelectedItemPosition()
     }
@@ -183,7 +187,12 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             ff.path = filee.getPath().replace(file.getPath(),file.getName());
             String ss = FileUtils.load(filee.getPath());
             try {
-                ff.subModels=Convert.VttTextToSubModel(ss,lang[s1.getSelectedItemPosition()]);
+                if (s2.getSelectedItemPosition()== 0)
+                    ff.subModels=Convert.VttTextToSubModel(ss,lang[s1.getSelectedItemPosition()]);
+                if (s2.getSelectedItemPosition()== 1)
+                    ff.subModels=Convert.Vtt_no_id_TextToSubModel(ss,lang[s1.getSelectedItemPosition()]);
+                if (s2.getSelectedItemPosition()== 2)
+                    ff.subModels=Convert.Mp3TextToSubModel(ss,lang[s1.getSelectedItemPosition()]);
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
@@ -198,12 +207,19 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
         for(SubFile subFile: files) {
             String a= null;
             try {
-                a = Convert.SubModelToVttText(subFile.subModels);
+                if (s3.getSelectedItemPosition()== 0) {
+                    a = Convert.SubModelToVttText(subFile.subModels);
+                }
+                if (s3.getSelectedItemPosition()== 1) {
+                    a = Convert.SubModelToMp3Text(subFile.subModels);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 return;
             }
-            FileUtils.saveFiles(subFile.path,a,false);
+            Uri rr = Uri.parse( subFile.path);
+
+            FileUtils.saveFiles(subFile.path.replace(".vtt",typeex[s3.getSelectedItemPosition()]),a,false);
         }
 
     }
@@ -228,16 +244,22 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             subFiles.add(subFile);
         }
 
-
         for(SubFile subFile: subFiles) {
             String a= null;
             try {
-                a = Convert.SubModelToVttText(subFile.subModels);
+                if (s3.getSelectedItemPosition()== 0) {
+                    a = Convert.SubModelToVttText(subFile.subModels);
+                }
+                if (s3.getSelectedItemPosition()== 1) {
+                    a = Convert.SubModelToMp3Text(subFile.subModels);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
                 return;
             }
-            FileUtils.saveFiles(subFile.path,a,false);
+            Uri rr = Uri.parse( subFile.path);
+
+            Toast.makeText(this, rr.getLastPathSegment()+"  "+ rr.getPathSegments().get(0), Toast.LENGTH_SHORT).show();
+            FileUtils.saveFiles(subFile.path.replace(".vtt",typeex[s3.getSelectedItemPosition()]),a,false);
         }
 
     }

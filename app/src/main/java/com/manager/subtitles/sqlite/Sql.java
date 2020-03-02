@@ -131,7 +131,7 @@ public class Sql extends SQLiteOpenHelper {
     }
     public int getIdFileFromFile(String namefile){
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT idfile FROM file where name='"+namefile+"' LIMIT 1",null);
+        Cursor re = database.rawQuery("SELECT idfile FROM file where name='"+namefile.replace("'","''")+"' LIMIT 1",null);
         re.moveToFirst();
         return re.getInt(re.getColumnIndex(Idfile));
     }
@@ -140,7 +140,7 @@ public class Sql extends SQLiteOpenHelper {
         ArrayList<SubModel> subModels = new ArrayList<>();
 
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT * FROM subitem WHERE idfile ='"+fileid+"' and lang ='"+lang+"'",null);
+        Cursor re = database.rawQuery("SELECT * FROM subitem WHERE idfile ='"+fileid.replace("'","''")+"' and lang ='"+lang.replace("'","''")+"'",null);
        // Cursor re = database.rawQuery("SELECT * FROM subitem",null);
         int rr = re.getCount();
         re.moveToFirst();
@@ -186,7 +186,7 @@ public class Sql extends SQLiteOpenHelper {
 
     public SubFile getFilleWhithPath(String path , String lang){
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT * FROM file where path = '"+path+"' LIMIT 1",null);
+        Cursor re = database.rawQuery("SELECT * FROM file where path = '"+path.replace("'","''")+"' LIMIT 1",null);
         re.moveToFirst();
             SubFile subFile=new SubFile();
             subFile.name = re.getString(re.getColumnIndex(Name));
@@ -243,8 +243,13 @@ public class Sql extends SQLiteOpenHelper {
         addAllFile(subFiles,true);
 
     }
-    public boolean isLangeExist(String lang){
 
+    public boolean isLangeExist(String lang){
+        SQLiteDatabase database = getReadableDatabase();
+        Cursor re = database.rawQuery("SELECT COUNT (*)  FROM subitem WHERE  lang ='"+lang+"'",null);
+        if(re.getCount() > 0){
+            return true;
+        }
         return false;
     }
 
