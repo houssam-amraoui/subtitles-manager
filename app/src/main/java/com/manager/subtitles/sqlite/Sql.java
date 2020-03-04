@@ -184,11 +184,12 @@ public class Sql extends SQLiteOpenHelper {
         return new SubTime(hour, minute, second, millisecond);
     }
 
-    public SubFile getFilleWhithPath(String path , String lang){
+    public SubFile getFilleWhithId(String id , String lang){
         SQLiteDatabase database = getReadableDatabase();
-        Cursor re = database.rawQuery("SELECT * FROM file where path = '"+path.replace("'","''")+"' LIMIT 1",null);
+        Cursor re = database.rawQuery("SELECT * FROM file where idfile = '"+id.replace("'","''")+"' LIMIT 1",null);
         re.moveToFirst();
             SubFile subFile=new SubFile();
+            subFile.iddb=re.getString(re.getColumnIndex(Idfile));
             subFile.name = re.getString(re.getColumnIndex(Name));
             subFile.path = re.getString(re.getColumnIndex(Path));
             subFile.subModels = getSubModel(re.getString(re.getColumnIndex(Idfile)),lang);
@@ -203,6 +204,7 @@ public class Sql extends SQLiteOpenHelper {
 
         while (!re.isAfterLast()){
             SubFile subFile=new SubFile();
+            subFile.iddb= re.getString(re.getColumnIndex(Idfile));
             subFile.name= re.getString(re.getColumnIndex(Name));
             subFile.path= re.getString(re.getColumnIndex(Path));
             subFile.subModels= getSubModel(re.getString(re.getColumnIndex(Idfile)),lang);
@@ -232,7 +234,7 @@ public class Sql extends SQLiteOpenHelper {
         ArrayList<SubFile> subFiles =new ArrayList<>();
         for (GoogleSubFile sub : txt)
         {
-            SubFile subFile = getFilleWhithPath(sub.filepath,fromlang);
+            SubFile subFile = getFilleWhithId(sub.fileid,fromlang);
             for (int i=0;i<sub.googleModels.size();i++){
             GoogleSubModel model =sub.googleModels.get(i);
             subFile.subModels.get(i).setText(model.text);

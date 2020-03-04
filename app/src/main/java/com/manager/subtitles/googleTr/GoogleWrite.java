@@ -13,12 +13,8 @@ public class GoogleWrite {
         int nbadd =0;
         StringBuilder file =new StringBuilder();
         for (int ii =0; ii<subFileList.size();ii++) {
-
             SubFile subFile = subFileList.get(ii);
-
-
             StringBuilder builder =new StringBuilder();
-
             builder.append(TextToNum(subFile.path)+"\n\n");
 
             for (int i= 0;i<subFile.subModels.size();i++) {

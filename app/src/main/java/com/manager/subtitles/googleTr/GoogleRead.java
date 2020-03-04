@@ -43,13 +43,13 @@ public class GoogleRead {
                 if (cursorStatus==CursorStatus.NONE) {
                     googleSubFile = new GoogleSubFile();
                     googleSubModel = new GoogleSubModel();
-                    googleSubFile.filepath = NumToText(textLine);
+                    googleSubFile.fileid = NumToText(textLine);
                 }
                 if (cursorStatus == CursorStatus.CUE_PATH) {
                     listSubFile.add(googleSubFile);
                     googleSubFile = new GoogleSubFile();
                     googleSubModel = new GoogleSubModel();
-                    googleSubFile.filepath= NumToText(textLine);
+                    googleSubFile.fileid = NumToText(textLine);
                     continue;
                 }
                 cursorStatus = CursorStatus.CUE_PATH;
