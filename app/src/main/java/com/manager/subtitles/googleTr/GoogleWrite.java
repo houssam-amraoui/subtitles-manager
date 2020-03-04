@@ -8,9 +8,14 @@ import java.util.ArrayList;
 
 public class GoogleWrite {
 
-    public static String write(ArrayList<SubFile> subFileList) {
+    public static ArrayList<String> write(ArrayList<SubFile> subFileList , int nbline) {
+        ArrayList<String> sss= new ArrayList<>();
+        int nbadd =0;
         StringBuilder file =new StringBuilder();
-        for (SubFile subFile: subFileList) {
+        for (int ii =0; ii<subFileList.size();ii++) {
+
+            SubFile subFile = subFileList.get(ii);
+
 
             StringBuilder builder =new StringBuilder();
 
@@ -26,11 +31,21 @@ public class GoogleWrite {
                 builder.append(text);
 
             }
-
+            nbadd += subFile.subModels.size();
+            if(nbadd<nbline)
                 file.append(builder.toString());
-
+            else
+            {
+                sss.add(file.toString());
+                file = new StringBuilder();
+                file.append(builder.toString());
+                nbadd = subFile.subModels.size();
+            }
         }
-        return file.toString();
+        if (file.length()>1)
+            sss.add(file.toString());
+
+        return sss;
     }
     private static String TextToNum(String text) {
         String num ="";

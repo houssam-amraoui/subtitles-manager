@@ -88,8 +88,10 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
     }
     private void exportfileTr(){
         ArrayList<SubFile> subFiles =db.getAllFille(lang[s3.getSelectedItemPosition()]);
-        String aa= GoogleWrite.write(subFiles);
-        FileUtils.saveFiles("subtest.txt",aa,false);
+        ArrayList<String> aa= GoogleWrite.write(subFiles,700);
+        for (int i= 0; i<aa.size();i++) {
+            FileUtils.saveFiles("sub"+i+".txt", aa.get(i), false);
+        }
     }
     private void importfileTr(String filepath){
         String a= FileUtils.load(filepath);

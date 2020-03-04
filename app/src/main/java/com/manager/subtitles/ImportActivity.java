@@ -34,7 +34,7 @@ import java.util.List;
 
 public class ImportActivity extends AppCompatActivity implements View.OnClickListener {
     public final String[] lang = new String[]{"EN", "AR", "FR"};
-    private final String[] type = new String[]{".vtt", ".vtt",".vtt"};
+    private final String[] type = new String[]{".vtt", ".vtt",".srt"};
     private final String[] typeex = new String[]{".vtt", ".lrc"};
     Spinner s1,s2,s3;
     Button b1,b2,btnExport;
@@ -219,7 +219,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             }
             Uri rr = Uri.parse( subFile.path);
 
-            FileUtils.saveFiles(subFile.path.replace(".vtt",typeex[s3.getSelectedItemPosition()]),a,false);
+            FileUtils.saveFiles(subFile.path.replace(type[2],typeex[s3.getSelectedItemPosition()]),a,false);
         }
 
     }
