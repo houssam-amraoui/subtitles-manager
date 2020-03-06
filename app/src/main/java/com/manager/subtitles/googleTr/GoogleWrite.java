@@ -15,7 +15,7 @@ public class GoogleWrite {
         for (int ii =0; ii<subFileList.size();ii++) {
             SubFile subFile = subFileList.get(ii);
             StringBuilder builder =new StringBuilder();
-            builder.append(TextToNum(subFile.path)+"\n\n");
+            builder.append(TextToNum(subFile.iddb)+"\n\n");
 
             for (int i= 0;i<subFile.subModels.size();i++) {
                 SubModel sub = subFile.subModels.get(i);
@@ -44,10 +44,8 @@ public class GoogleWrite {
         return sss;
     }
     private static String TextToNum(String text) {
-        String num ="";
-        for (int i= 0;i<text.length();i++){
-            num += ((int)text.charAt(i))+ " ";
-        }
+        String num ="S";
+            num += text;
         return num;
     }
 

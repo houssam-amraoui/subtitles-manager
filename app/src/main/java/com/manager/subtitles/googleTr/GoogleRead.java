@@ -97,25 +97,13 @@ public class GoogleRead {
     }
 
     public static String NumToText(String num) {
-        String ss[] = num.split(" ");
-        if (ss.length == 1)
-            return null;
         String text ="";
-        for (int i= 0;i<ss.length;i++){
-            text += ((char) Integer.parseInt(ss[i]));
-        }
+            text += num.replace("S","");
         return text;
     }
     public static boolean isNumTextpath(String num)
     {
-
-        try {
-            if (NumToText(num)==null)
-                return false;
-        }catch (Exception ex) {
-            return false;
-        }
-        return true;
+        return num.startsWith("S");
     }
 
 

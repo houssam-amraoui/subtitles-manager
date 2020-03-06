@@ -256,9 +256,7 @@ public class ImportActivity extends AppCompatActivity implements View.OnClickLis
             } catch (Exception e) {
                 return;
             }
-            Uri rr = Uri.parse( subFile.path);
 
-            Toast.makeText(this, rr.getLastPathSegment()+"  "+ rr.getPathSegments().get(0), Toast.LENGTH_SHORT).show();
             FileUtils.saveFiles(subFile.path.replace(".vtt",typeex[s3.getSelectedItemPosition()]),a,false);
         }
 
