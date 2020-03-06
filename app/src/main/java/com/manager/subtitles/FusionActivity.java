@@ -25,6 +25,7 @@ import com.manager.subtitles.sqlite.Sql;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FusionActivity  extends AppCompatActivity implements View.OnClickListener {
     TextView tpath1,tpathe2;
@@ -88,14 +89,19 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
     }
     private void exportfileTr(){
         ArrayList<SubFile> subFiles =db.getAllFille(lang[s3.getSelectedItemPosition()]);
-        String a =subFiles.get(0).path.split("/")[0];
-        ArrayList<String> aa= GoogleWrite.write(subFiles,700);
+        String a =subFiles.get(0).path.split("/")[0]+lang[s3.getSelectedItemPosition()];
+        ArrayList<String> aa= GoogleWrite.write(subFiles,600);
         for (int i= 0; i<aa.size();i++) {
             FileUtils.saveFiles(a+"/sub"+i+".txt", aa.get(i), false);
         }
     }
-    private void importfileTr(String filepath){
-        String a= FileUtils.load(filepath);
+    private void importfileTr(File filepath){
+        String a="";
+        List<File> fileList = FileUtils.getAllFilesFromDerectory(filepath);
+        fileList = FileUtils.filter(fileList,".txt");
+        for (File filee : fileList) {
+            a += FileUtils.load(filee.getPath());
+        }
         ArrayList<GoogleSubFile> googleSubFiles= GoogleRead.parse(a);
         db.SubGoogleToDb(googleSubFiles,lang[s1.getSelectedItemPosition()],lang[s2.getSelectedItemPosition()]);
 
@@ -106,8 +112,8 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
         if(requestCode == 100)
             if (resultCode== RESULT_OK){
                 String ss = data.getData().getPath();
-                t1.setText(FileUtils.getRealpathForFile(ss));
-                file = new File(FileUtils.getRealpathForFile(ss));
+                t1.setText(FileUtils.getRealpathFromTree(ss));
+                file = new File(FileUtils.getRealpathFromTree(ss));
 
             }
     }
@@ -116,7 +122,7 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pathim :
-                Intent ii = FileUtils.ChooseFile();
+                Intent ii = FileUtils.ChooseDirectory();
                 startActivityForResult(ii, 100);
                 break;
 
@@ -127,7 +133,7 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
 
             case R.id.btnimport :
                 if (caneAdd)
-                    importfileTr(file.getPath());
+                    importfileTr(file);
                 break;
         }
     }
