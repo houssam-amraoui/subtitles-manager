@@ -100,10 +100,11 @@ public class FusionActivity  extends AppCompatActivity implements View.OnClickLi
         List<File> fileList = FileUtils.getAllFilesFromDerectory(filepath);
         fileList = FileUtils.filter(fileList,".txt");
         for (File filee : fileList) {
-            a += FileUtils.load(filee.getPath());
-        }
+            a = FileUtils.load(filee.getPath());
+
         ArrayList<GoogleSubFile> googleSubFiles= GoogleRead.parse(a);
         db.SubGoogleToDb(googleSubFiles,lang[s1.getSelectedItemPosition()],lang[s2.getSelectedItemPosition()]);
+        }
 
     }
 
